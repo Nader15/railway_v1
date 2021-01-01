@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:railway_v1/ui/OnBoarding.dart';
+import 'package:railway_v1/ui/home_page.dart';
 import 'package:railway_v1/ui/login.dart';
 import 'package:railway_v1/utils/colors_file.dart';
 import 'package:railway_v1/utils/custom_widgets/backgrount.dart';
+import 'package:railway_v1/utils/navigator.dart';
 
 class Second extends StatefulWidget {
   @override
@@ -19,44 +21,47 @@ class _SecondState extends State<Second> {
         Background(),
         Stack(
           children: <Widget>[
-            Container(
-              height: 30,
-              width: 95,
-              margin: EdgeInsets.only(
-                  left: 10,
-                  top: MediaQuery.of(context).size.height / 2.295,
-                  right: 155),
-              padding: EdgeInsets.fromLTRB(60.0, 16.0, 65.0, 16.0),
-              alignment: Alignment.centerLeft,
-              decoration: BoxDecoration(
-                  color: primaryAppColor.withOpacity(.7),
-                  borderRadius: BorderRadius.all(Radius.circular(30))),
+            SafeArea(
+              child: Container(
+                height: 30,
+                width: 95,
+                margin: EdgeInsets.only(
+                    left: 10,
+                    top: MediaQuery.of(context).size.height / 15.5,),
+                padding: EdgeInsets.fromLTRB(60.0, 16.0, 65.0, 16.0),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: primaryAppColor.withOpacity(.7),
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+              ),
             ),
-            Container(
-              height: 80,
-              margin: EdgeInsets.only(
-                  left: 20, top: MediaQuery.of(context).size.height / 2.29),
-              child: Column(
-                children: <Widget>[
-                  Text('Welcome to our Railway Application',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold)),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text('Find your train anytime',
-                      style: TextStyle(
-                          color: Colors.white.withAlpha(240),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w300)),
-                ],
+            SafeArea(
+              child: Container(
+                alignment: Alignment.center,
+                height: 80,
+                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 15,),
+                child: Column(
+                  children: <Widget>[
+                    Text('Welcome to our Railway Application',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text('Find your train anytime',
+                        style: TextStyle(
+                            color: Colors.white.withAlpha(240),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w300)),
+                  ],
+                ),
               ),
             ),
             Center(
               child: Padding(
-                padding:  EdgeInsets.only(
+                padding: EdgeInsets.only(
                     bottom: 0, top: MediaQuery.of(context).size.height / 1.15),
                 child: RaisedButton(
                   color: primaryAppColor,
@@ -69,7 +74,7 @@ class _SecondState extends State<Second> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                   onPressed: () {
-                    _onButtomPressed(context);
+                    navigateAndKeepStack(context, OnBoarding());
                   },
                   child: Text(
                     "Get Started",
@@ -84,57 +89,57 @@ class _SecondState extends State<Second> {
     ));
   }
 
-  _onButtomPressed(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Container(
-            height: 200,
-            child: Container(
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(left: 150, right: 150),
-                    child: Divider(
-                      thickness: 4,
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Continue as :',
-                    style: TextStyle(fontSize: 17),
-                  ),
-                  Divider(),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.perm_identity),
-                    title: Text('Client'),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => OnBoarding()));
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.dashboard),
-                    title: Text('Manger'),
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Login()));
-                    },
-                  ),
-                ],
-              ),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).canvasColor,
-                  borderRadius: BorderRadius.only(
-                      topLeft: const Radius.circular(30),
-                      topRight: const Radius.circular(30))),
-            ),
-          );
-        });
-  }
+// _onButtomPressed(BuildContext context) {
+//   showModalBottomSheet(
+//       context: context,
+//       builder: (context) {
+//         return Container(
+//           height: 200,
+//           child: Container(
+//             child: Column(
+//               children: <Widget>[
+//                 Padding(
+//                   padding: EdgeInsets.only(left: 150, right: 150),
+//                   child: Divider(
+//                     thickness: 4,
+//                   ),
+//                 ),
+//                 SizedBox(height: 10),
+//                 Text(
+//                   'Continue as :',
+//                   style: TextStyle(fontSize: 17),
+//                 ),
+//                 Divider(),
+//                 SizedBox(
+//                   height: 5,
+//                 ),
+//                 ListTile(
+//                   leading: Icon(Icons.perm_identity),
+//                   title: Text('Client'),
+//                   onTap: () {
+//                     Navigator.push(
+//                         context,
+//                         MaterialPageRoute(
+//                             builder: (context) => OnBoarding()));
+//                   },
+//                 ),
+//                 ListTile(
+//                   leading: Icon(Icons.dashboard),
+//                   title: Text('Manger'),
+//                   onTap: () {
+//                     Navigator.push(context,
+//                         MaterialPageRoute(builder: (context) => Login()));
+//                   },
+//                 ),
+//               ],
+//             ),
+//             decoration: BoxDecoration(
+//                 color: Theme.of(context).canvasColor,
+//                 borderRadius: BorderRadius.only(
+//                     topLeft: const Radius.circular(30),
+//                     topRight: const Radius.circular(30))),
+//           ),
+//         );
+//       });
+// }
 }
