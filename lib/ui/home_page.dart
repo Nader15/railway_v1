@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
       HomeScreen(),
       Trips(),
       Center(
-        child: Text("Avialable Tickets"),
+        child: Text("You don't have tickets, yet ."),
       ),
       Profile(),
     ];

@@ -8,6 +8,10 @@ class Profile extends StatelessWidget {
     return Scaffold(
         backgroundColor: primaryAppColor,
         appBar: AppBar(
+          leading: IconButton(
+            onPressed: (){},
+            icon: Icon(Icons.arrow_back_outlined,color: blackColor,),
+          ),
           title: Text(
             "Welcome Mohamed ",
             style: TextStyle(color: blackColor),

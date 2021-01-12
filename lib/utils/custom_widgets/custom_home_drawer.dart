@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:railway_v1/ui/login.dart';
 import 'package:railway_v1/ui/profile.dart';
+import 'package:railway_v1/ui/settings.dart';
 import 'package:railway_v1/utils/colors_file.dart';
+import 'package:railway_v1/utils/navigator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomHomeDrawer extends StatelessWidget {
   @override
@@ -72,7 +75,9 @@ class CustomHomeDrawer extends StatelessWidget {
                     'Contact Us',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    launch("tel://5050");
+                  },
                 ),
                 ListTile(
                   leading: Icon(Icons.settings, color: blackColor),
@@ -80,7 +85,9 @@ class CustomHomeDrawer extends StatelessWidget {
                     'Settings',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    navigateAndKeepStack(context,Settings());
+                  },
                 ),
                 Divider(),
                 ListTile(
@@ -105,8 +112,7 @@ class CustomHomeDrawer extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Login()));
+                    navigateAndClearStack(context,Login());
                   },
                 )
               ],
