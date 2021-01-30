@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:railway_v1/ui/home_screen.dart';
 import 'package:railway_v1/ui/profile.dart';
 import 'package:railway_v1/ui/tickets.dart';
-import 'package:railway_v1/ui/trips.dart';
 import 'package:railway_v1/ui/trips_test.dart';
 import 'package:railway_v1/utils/colors_file.dart';
 import 'package:railway_v1/utils/custom_widgets/custom_home_drawer.dart';
@@ -20,7 +19,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final items = [
       HomeScreen(),
-      // Trips(),
       TripsTest(),
       Tickets(),
       Profile(),
