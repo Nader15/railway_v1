@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:railway_v1/utils/colors_file.dart';
 
-void CustomSnackBar(BuildContext context,String content){
-  Scaffold.of(context).showSnackBar(
+
+void CustomSnackBar(GlobalKey<ScaffoldState> scaffoldKey,BuildContext context,String content){
+  scaffoldKey.currentState.showSnackBar(
       SnackBar(
         backgroundColor: Colors.white,
         duration: Duration(seconds: 3),

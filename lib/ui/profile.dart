@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:railway_v1/utils/colors_file.dart';
+import 'package:railway_v1/utils/global_vars.dart';
 
 class Profile extends StatelessWidget {
   @override
@@ -13,7 +14,7 @@ class Profile extends StatelessWidget {
             icon: Icon(Icons.arrow_back_outlined,color: blackColor,),
           ),
           title: Text(
-            "Welcome Mohamed ",
+            "Welcome ${userName}",
             style: TextStyle(color: blackColor),
           ),
           centerTitle: true,
@@ -48,7 +49,7 @@ class Profile extends StatelessWidget {
                         margin: EdgeInsets.only(left: 50.0),
                         child: ListTile(
                           contentPadding: EdgeInsets.only(left: 50.0),
-                          title: Text("Mohamed Ahmed",
+                          title: Text("${userName}",
                               style: Theme.of(context).textTheme.title),
                         ),
                       ),
@@ -89,22 +90,22 @@ class Profile extends StatelessWidget {
                     ListTile(
                       leading: Icon(Icons.email, color: primaryAppColor),
                       title: Text('Email'),
-                      subtitle: Text("mohamed@yahoo.com"),
+                      subtitle: Text("${userEmail}"),
                     ),
                     ListTile(
                       leading: Icon(Icons.phone, color: primaryAppColor),
                       title: Text('Phone'),
-                      subtitle: Text('+20-' "1012323132"),
+                      subtitle: Text('+20-' "${userPhone}"),
                     ),
                     ListTile(
                       leading: Icon(Icons.home, color: primaryAppColor),
                       title: Text('Address'),
-                      subtitle: Text("Giza , egypt"),
+                      subtitle: Text("-----"),
                     ),
                     ListTile(
                       leading: Icon(Icons.date_range, color: primaryAppColor),
                       title: Text('Joined date'),
-                      subtitle: Text('15 february 2020'),
+                      subtitle: Text('${userJoinedTime}'),
                     ),
                   ],
                 ),

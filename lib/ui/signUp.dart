@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:railway_v1/ApiFunctions/shared.dart';
 import 'package:railway_v1/ui/login.dart';
+import 'package:railway_v1/ApiFunctions/Api.dart';
 import 'package:railway_v1/utils/colors_file.dart';
+import 'package:railway_v1/ui/home_page.dart';
 import 'package:railway_v1/utils/custom_widgets/backgrount.dart';
 import 'package:railway_v1/utils/custom_widgets/custom_button.dart';
 import 'package:railway_v1/utils/custom_widgets/custom_snackBar.dart';
 import 'package:railway_v1/utils/navigator.dart';
-
+import 'package:railway_v1/utils/global_vars.dart';
+import 'package:railway_v1/models/users.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -14,6 +18,8 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  UsersModel usersModel;
+
   bool checkValue = false;
   bool _isHidden = false;
 
@@ -48,6 +54,7 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scafoldState,
       body: Stack(
         children: [
           Background(),
@@ -56,204 +63,250 @@ class _SignUpState extends State<SignUp> {
             child: Form(
               key: formKey,
               child: Padding(
-                padding: EdgeInsets.only(left: 23, right: 23),
-                child: Builder(
-                  builder: (context)=>Column(
-                    children: [
-                      SizedBox(height: 30),
-                      Center(
-                        child: SvgPicture.asset(
-                          "images/train.svg",
-                          color: primaryAppColor,
-                          height: 150,
+                  padding: EdgeInsets.only(left: 23, right: 23),
+                  child: Builder(
+                    builder: (context) => Column(
+                      children: [
+                        SizedBox(height: 30),
+                        Center(
+                          child: SvgPicture.asset(
+                            "images/train.svg",
+                            color: primaryAppColor,
+                            height: 150,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 20),
-                      Text("SIGN UP",
-                          style: TextStyle(color: whiteColor, fontSize: 32)),
-                      SizedBox(height: 30),
-                      TextFormField(
-                        controller: nameController,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        keyboardType: TextInputType.name,
-                        validator: validateName,
-                        style: TextStyle(color: whiteColor),
-                        cursorColor: primaryAppColor,
-                        decoration: InputDecoration(
-                            fillColor: greyPrimaryColor.withOpacity(.1),
-                            filled: true,
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(5)),
-                            hintText: 'Name',
-                            hintStyle: TextStyle(color: greyPrimaryColor)),
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.only(left: 10,right: 10),
-                            width: 80,
-                            height: 58,
-                            decoration: BoxDecoration(
-                                color: Colors.grey.withOpacity(.1),
-                                borderRadius: BorderRadius.circular(5)),
-                            child: DropdownButton(
-                              hint: Text(
-                                "+20",
-                                style: TextStyle(
-                                  color: Color(0xffb8c3cb).withOpacity(0.5),
+                        SizedBox(height: 20),
+                        Text("SIGN UP",
+                            style: TextStyle(color: whiteColor, fontSize: 32)),
+                        SizedBox(height: 30),
+                        TextFormField(
+                          controller: nameController,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          keyboardType: TextInputType.name,
+                          validator: validateName,
+                          style: TextStyle(color: whiteColor),
+                          cursorColor: primaryAppColor,
+                          decoration: InputDecoration(
+                              fillColor: greyPrimaryColor.withOpacity(.1),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(5)),
+                              hintText: 'Name',
+                              hintStyle: TextStyle(color: greyPrimaryColor)),
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.only(left: 10, right: 10),
+                              width: 80,
+                              height: 58,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(.1),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: DropdownButton(
+                                hint: Text(
+                                  "+20",
+                                  style: TextStyle(
+                                    color: Color(0xffb8c3cb).withOpacity(0.5),
+                                  ),
                                 ),
+                                icon: Icon(Icons.keyboard_arrow_down,
+                                    color: Color(0xffb8c3cb)),
+                                isExpanded: true,
+                                underline: SizedBox(),
+                                dropdownColor: Color(0xff173049),
+                                style: TextStyle(color: whiteColor),
+                                value: valueChoosedPhoneCode,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    valueChoosedPhoneCode = newValue;
+                                  });
+                                },
+                                items: phoneCodeItems.map((valueItem) {
+                                  return DropdownMenuItem(
+                                    value: valueItem,
+                                    child: Text(valueItem),
+                                  );
+                                }).toList(),
                               ),
-                              icon: Icon(Icons.keyboard_arrow_down, color: Color(0xffb8c3cb)),
-                              isExpanded: true,
-                              underline: SizedBox(),
-                              dropdownColor: Color(0xff173049),
-                              style: TextStyle(color: whiteColor),
-                              value: valueChoosedPhoneCode,
-                              onChanged: (newValue) {
-                                setState(() {
-                                  valueChoosedPhoneCode = newValue;
+                            ),
+                            SizedBox(width: 10),
+                            SizedBox(
+                              height: 80,
+                              width: MediaQuery.of(context).size.width / 1.61,
+                              child: TextFormField(
+                                controller: phoneController,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                keyboardType: TextInputType.number,
+                                validator: validatePhone,
+                                style: TextStyle(color: whiteColor),
+                                cursorColor: primaryAppColor,
+                                decoration: InputDecoration(
+                                    fillColor: Colors.grey.withOpacity(.1),
+                                    filled: true,
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius: BorderRadius.circular(5)),
+                                    hintText: 'Phone Number',
+                                    hintStyle: TextStyle(
+                                        color: Color(0xffb8c3cb)
+                                            .withOpacity(0.5))),
+                              ),
+                            ),
+                          ],
+                        ),
+                        TextFormField(
+                          controller: emailController,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          keyboardType: TextInputType.emailAddress,
+                          validator: validateEmail,
+                          style: TextStyle(color: whiteColor),
+                          cursorColor: primaryAppColor,
+                          decoration: InputDecoration(
+                              fillColor: greyPrimaryColor.withOpacity(.1),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(5)),
+                              hintText: 'Email',
+                              hintStyle: TextStyle(color: greyPrimaryColor)),
+                        ),
+                        SizedBox(height: 10),
+                        TextFormField(
+                          controller: passwordController,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: validatePassword,
+                          obscureText: _isHidden,
+                          style: TextStyle(color: whiteColor),
+                          cursorColor: primaryAppColor,
+                          decoration: InputDecoration(
+                              fillColor: greyPrimaryColor.withOpacity(.1),
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderSide: BorderSide.none,
+                                  borderRadius: BorderRadius.circular(5)),
+                              hintText: 'Password',
+                              suffixIcon: IconButton(
+                                onPressed: _toggleVisibility,
+                                icon: _isHidden
+                                    ? Icon(
+                                        Icons.visibility_off,
+                                        color: greyPrimaryColor,
+                                      )
+                                    : Icon(
+                                        Icons.visibility,
+                                        color: whiteColor,
+                                      ),
+                              ),
+                              hintStyle: TextStyle(color: greyPrimaryColor)),
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                            alignment: Alignment.bottomLeft,
+                            child: Row(
+                              children: [
+                                custom_checkBox(),
+                                SizedBox(width: 10),
+                                Text('I Accept Terms And Conditions',
+                                    style: TextStyle(color: whiteColor)),
+                              ],
+                            )),
+                        SizedBox(height: 30),
+                        CustomButton(
+                            bttnName: 'Register',
+                            bttnHeight: 55,
+                            bttnWidth: 368,
+                            bttnNameSize: 20,
+                            onPress: () {
+                              _validateInputs();
+                              if (formKey.currentState.validate()) {
+                                Api(context)
+                                    .userRegister(
+                                    scafoldState,
+                                    nameController.text,
+                                    emailController.text,
+                                    passwordController.text,
+                                    passwordController.text,
+                                    phoneController.text)
+                                    .then((value) {
+                                  if (value is UsersModel) {
+                                    usersModel = value;
+                                    Future.delayed(Duration(milliseconds: 250),
+                                            () {
+                                          print(
+                                              "_isSelected_isSelected ${_isSelected}");
+                                          if (_isSelected) {
+                                            setUserTocken(
+                                                auth_token: usersModel
+                                                    .token.plainTextToken
+                                                    .split("|")[1],
+                                                userId: usersModel.user.id,
+                                                userName: usersModel.user.name,
+                                                userEmail: usersModel.user.email,
+                                                userPhone: usersModel.user.phoneNumber,
+                                              userJoinedTime: usersModel.token.accessToken.createdAt,
+                                            )
+                                                .then((value) {
+                                              UserTocken =
+                                              "Bearer ${usersModel.token.plainTextToken.split("|")[1]}";
+                                              userName = usersModel.user.name;
+                                              userEmail = usersModel.user.email;
+                                              userPhone = usersModel.user.phoneNumber;
+                                              userJoinedTime = usersModel.token.accessToken.createdAt;
+                                              userId = usersModel.user.id;
+                                              navigateAndKeepStack(
+                                                  context, HomePage());
+                                              // navigateAndKeepStack(context,Competitions());
+                                            });
+                                          }
+//talent_id: 46
+                                          else {
+                                            CustomSnackBar(scafoldState, context,
+                                                "Accept terms and conditions");
+                                            // navigateAndKeepStack(context,Competitions());
+                                          }
+                                        });
+                                  }
                                 });
+                              }
+                              else CustomSnackBar(scafoldState,context,"Invalid Data !");
+                            }),
+                        SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "If You Have Account ",
+                              style: TextStyle(color: greyPrimaryColor),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                navigateAndClearStack(context, Login());
                               },
-                              items: phoneCodeItems.map((valueItem) {
-
-                                return DropdownMenuItem(
-                                  value: valueItem,
-                                  child: Text(valueItem),
-                                );
-                              }).toList(),
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          SizedBox(
-                            height: 80,
-                            width: MediaQuery.of(context).size.width /
-                                1.61,
-                            child: TextFormField(
-                              controller: phoneController,
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
-                              keyboardType: TextInputType.number,
-                              validator: validatePhone,
-                              style: TextStyle(color: whiteColor),
-                              cursorColor: primaryAppColor,
-                              decoration: InputDecoration(
-                                  fillColor:
-                                  Colors.grey.withOpacity(.1),
-                                  filled: true,
-                                  border: OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius:
-                                      BorderRadius.circular(5)),
-                                  hintText: 'Phone Number',
-                                  hintStyle: TextStyle(
-                                      color: Color(0xffb8c3cb)
-                                          .withOpacity(0.5))),
-                            ),
-                          ),
-                        ],
-                      ),
-                      TextFormField(
-                        controller: emailController,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        keyboardType: TextInputType.emailAddress,
-                        validator: validateEmail,
-                        style: TextStyle(color: whiteColor),
-                        cursorColor: primaryAppColor,
-                        decoration: InputDecoration(
-                            fillColor: greyPrimaryColor.withOpacity(.1),
-                            filled: true,
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(5)),
-                            hintText: 'Email',
-                            hintStyle: TextStyle(color: greyPrimaryColor)),
-                      ),
-                      SizedBox(height: 10),
-                      TextFormField(
-                        controller: passwordController,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        validator: validatePassword,
-                        obscureText: _isHidden,
-                        style: TextStyle(color: whiteColor),
-                        cursorColor: primaryAppColor,
-                        decoration: InputDecoration(
-                            fillColor: greyPrimaryColor.withOpacity(.1),
-                            filled: true,
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(5)),
-                            hintText: 'Password',
-                            suffixIcon: IconButton(
-                              onPressed: _toggleVisibility,
-                              icon: _isHidden
-                                  ? Icon(
-                                Icons.visibility_off,
-                                color: greyPrimaryColor,
-                              )
-                                  : Icon(
-                                Icons.visibility,
-                                color: whiteColor,
-                              ),
-                            ),
-                            hintStyle: TextStyle(color: greyPrimaryColor)),
-                      ),
-                      SizedBox(height: 20),
-                      Container(
-                          alignment: Alignment.bottomLeft,
-                          child: Row(
-                            children: [
-                              custom_checkBox(),
-                              SizedBox(width: 10),
-                              Text('I Accept Terms And Conditions',
-                                  style: TextStyle(color: whiteColor)),
-                            ],
-                          )),
-                      SizedBox(height: 30),
-                      CustomButton(
-                          bttnName: 'Register',
-                          bttnHeight: 55,
-                          bttnWidth: 368,
-                          bttnNameSize: 20,
-                          onPress: () {
-                            _validateInputs();
-                            if (formKey.currentState.validate()) {
-                              navigateAndKeepStack(context, Login());
-                            }
-                            else CustomSnackBar(context,"Invalid Data !");
-                          }),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "If You Have Account ",
-                            style: TextStyle(color: greyPrimaryColor),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              navigateAndClearStack(context, Login());
-                            },
-                            child: RichText(
-                              text: TextSpan(
-                                text: "Sign in",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: whiteColor,
-                                  decoration: TextDecoration.underline,
+                              child: RichText(
+                                text: TextSpan(
+                                  text: "Sign in",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: whiteColor,
+                                    decoration: TextDecoration.underline,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 20,)
-                    ],
-                  ),
-                )
-              ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        )
+                      ],
+                    ),
+                  )),
             ),
           ))
         ],
@@ -315,12 +368,14 @@ class _SignUpState extends State<SignUp> {
     else
       return null;
   }
+
   String validatePhoneCode(String value) {
     if (value.length == 0)
       return 'Pick code';
     else
       return null;
   }
+
   String validatePhone(String value) {
     if (value.length == 0)
       return 'Enter Phone Number';
@@ -329,6 +384,7 @@ class _SignUpState extends State<SignUp> {
     else
       return null;
   }
+
   String validateName(String value) {
     if (value.length == 0)
       return 'Enter your Name';

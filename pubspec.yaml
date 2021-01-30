@@ -20,6 +20,9 @@ dependencies:
   flutter_svg: ^0.18.0
   carousel_slider: ^2.3.1
   url_launcher: ^5.7.10
+  xs_progress_hud: ^1.0.2
+  http: ^0.12.1
+  shared_preferences: ^0.5.4+5
 
 dev_dependencies:
   flutter_test:

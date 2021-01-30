@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:railway_v1/ApiFunctions/shared.dart';
+import 'package:railway_v1/ui/home_page.dart';
 import 'package:railway_v1/ui/second.dart';
 import 'package:railway_v1/utils/colors_file.dart';
+import 'package:railway_v1/utils/global_vars.dart';
 import 'dart:async';
 
 import 'package:railway_v1/utils/navigator.dart';
@@ -21,7 +24,18 @@ class _openState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
     Future.delayed(Duration(seconds: 3), () {
-      navigateAndClearStack(context,Second());
+      getUserTocken(context).then((value) {
+
+        print("UserTocken:: ${UserTocken}");
+        if(UserTocken=="null"){
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Second()));
+
+        }
+        else {
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+
+        }
+      });
     });
   }
 

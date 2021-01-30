@@ -123,7 +123,7 @@ class _LoginState extends State<Login> {
                           if (formKey.currentState.validate()) {
                             navigateAndKeepStack(context, HomePage());
                           } else
-                            CustomSnackBar(context, "please enter correct data");
+                            CustomSnackBar(scafoldState,context, "please enter correct data");
                         },
                       ),
                       SizedBox(height: 20),
