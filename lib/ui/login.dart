@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:railway_v1/ApiFunctions/Api.dart';
+import 'package:railway_v1/ApiFunctions/shared.dart';
+import 'package:railway_v1/models/users.dart';
 import 'package:railway_v1/ui/home_page.dart';
 import 'package:railway_v1/ui/signUp.dart';
 import 'package:railway_v1/utils/colors_file.dart';
 import 'package:railway_v1/utils/custom_widgets/backgrount.dart';
 import 'package:railway_v1/utils/custom_widgets/custom_button.dart';
 import 'package:railway_v1/utils/custom_widgets/custom_snackBar.dart';
+import 'package:railway_v1/utils/global_vars.dart';
 import 'package:railway_v1/utils/navigator.dart';
 
 class Login extends StatefulWidget {
@@ -14,6 +18,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  UsersModel usersModel;
+
   bool _isHidden = true;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -26,12 +33,14 @@ class _LoginState extends State<Login> {
 
   bool _autoValidate = false;
   final GlobalKey<ScaffoldState> scafoldState = new GlobalKey<ScaffoldState>();
+
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scafoldState,
       body: Stack(
         children: [
           Background(),
@@ -114,18 +123,70 @@ class _LoginState extends State<Login> {
                           )),
                       SizedBox(height: 50),
                       CustomButton(
-                        bttnName: 'Login',
-                        bttnHeight: 55,
-                        bttnWidth: 368,
-                        bttnNameSize: 20,
-                        onPress: () {
-                          _validateInputs();
-                          if (formKey.currentState.validate()) {
-                            navigateAndKeepStack(context, HomePage());
-                          } else
-                            CustomSnackBar(scafoldState,context, "please enter correct data");
-                        },
-                      ),
+                          bttnName: 'Login',
+                          bttnHeight: 55,
+                          bttnWidth: 368,
+                          bttnNameSize: 20,
+                          onPress: () {
+                            _validateInputs();
+                            if (formKey.currentState.validate()) {
+                              Api(context)
+                                  .userLogin(scafoldState, emailController.text,
+                                      passwordController.text)
+                                  .then((value) {
+                                if (value is UsersModel) {
+                                  usersModel = value;
+                                  Future.delayed(Duration(seconds: 1), () {
+                                    print(
+                                        "_isSelected_isSelected ${_isSelected}");
+                                    if (_isSelected) {
+                                      setUserTocken(
+                                              auth_token: usersModel.token.plainTextToken
+                                                  .split("|")[1],
+                                          userId: usersModel.user.id,
+                                          userName: usersModel.user.name,
+                                          userEmail: usersModel.user.email,
+                                          userPhone: usersModel.user.phoneNumber,
+                                          userJoinedTime: usersModel.token.accessToken.createdAt)
+                                          .then((value) {
+                                        UserTocken =
+                                        "Bearer ${usersModel.token.plainTextToken.split("|")[1]}";
+                                        userName = usersModel.user.name;
+                                        userEmail = usersModel.user.email;
+                                        userPhone = usersModel.user.phoneNumber;
+                                        userJoinedTime = usersModel.token.accessToken.createdAt;
+                                        userId = usersModel.user.id;
+                                        navigateAndKeepStack(
+                                            context, HomePage());
+                                        // navigateAndKeepStack(context,Competitions());
+                                      });
+                                    }
+//talent_id: 46
+                                    else {
+                                      UserTocken =
+                                      "Bearer ${usersModel.token.plainTextToken.split("|")[1]}";
+                                      userName = usersModel.user.name;
+                                      userEmail = usersModel.user.email;
+                                      userPhone = usersModel.user.phoneNumber;
+                                      userJoinedTime = usersModel.token.accessToken.createdAt;
+                                      userId = usersModel.user.id;
+                                      navigateAndKeepStack(context, HomePage());
+                                      // navigateAndKeepStack(context,Competitions());
+                                    }
+                                  });
+                                } else {}
+                              });
+                            }
+                          }
+                          // {
+                          //   _validateInputs();
+                          //   if (formKey.currentState.validate()) {
+                          //     navigateAndKeepStack(context, HomePage());
+                          //   } else
+                          //     CustomSnackBar(scafoldState, context,
+                          //         "please enter correct data");
+                          // },
+                          ),
                       SizedBox(height: 20),
                       Text(
                         "Forget Password? ",

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:railway_v1/ui/login.dart';
 import 'package:railway_v1/utils/colors_file.dart';
+import 'package:railway_v1/utils/global_vars.dart';
 import 'package:railway_v1/utils/navigator.dart';
 
 class Settings extends StatefulWidget {
@@ -43,7 +44,7 @@ class _SettingsState extends State<Settings> {
                         "images/profileImage.jpg"),radius: 20,
                     backgroundColor: Colors.white,
                   ),
-                  title: Text("Mohamed ""Ahmed"),
+                  title: Text("${userName}"),
                   onTap: (){},
                 ),
               ],
@@ -60,7 +61,7 @@ class _SettingsState extends State<Settings> {
                     children: <Widget>[
                       Icon(Icons.phone,color: Colors.grey),
                       SizedBox(width: 20),
-                      Text('01012323199'),
+                      Text('${userPhone}'),
                     ],
                   ),
                   onTap: (){},
@@ -71,7 +72,7 @@ class _SettingsState extends State<Settings> {
                     children: <Widget>[
                       Icon(Icons.email,color: Colors.grey),
                       SizedBox(width: 20),
-                      Text('mohamed@gmail.com'),
+                      Text('${userEmail}'),
                     ],
                   ),
                   onTap: (){},

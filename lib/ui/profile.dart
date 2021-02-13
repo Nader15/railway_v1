@@ -105,7 +105,7 @@ class Profile extends StatelessWidget {
                     ListTile(
                       leading: Icon(Icons.date_range, color: primaryAppColor),
                       title: Text('Joined date'),
-                      subtitle: Text('${userJoinedTime}'),
+                      subtitle: Text('${userJoinedTime.split("T")[0]}'),
                     ),
                   ],
                 ),

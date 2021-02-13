@@ -3,23 +3,25 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:railway_v1/ui/home_screen.dart';
 import 'package:railway_v1/ui/profile.dart';
 import 'package:railway_v1/ui/tickets.dart';
-import 'package:railway_v1/ui/trips_test.dart';
+import 'package:railway_v1/ui/trips.dart';
 import 'package:railway_v1/utils/colors_file.dart';
 import 'package:railway_v1/utils/custom_widgets/custom_home_drawer.dart';
 
 class HomePage extends StatefulWidget {
+  int currentIndex;
+
+  HomePage({this.currentIndex = 0});
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     final items = [
       HomeScreen(),
-      TripsTest(),
+      Trips(),
       Tickets(),
       Profile(),
     ];
@@ -37,7 +39,7 @@ class _HomePageState extends State<HomePage> {
                 true, 3),
           ],
         ),
-        body: items[_currentIndex]);
+        body: items[widget.currentIndex]);
   }
 
   Widget BuildNavBar(
@@ -45,7 +47,7 @@ class _HomePageState extends State<HomePage> {
     return GestureDetector(
       onTap: () {
         setState(() {
-          _currentIndex = index;
+          widget.currentIndex = index;
         });
       },
       child: Container(
@@ -56,7 +58,7 @@ class _HomePageState extends State<HomePage> {
             border: Border(
               bottom: BorderSide(
                 width: 4,
-                color: index == _currentIndex
+                color: index == widget.currentIndex
                     ? primaryAppColor
                     : Colors.transparent,
               ),
@@ -66,10 +68,10 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              index == _currentIndex
+              index == widget.currentIndex
                   ? SvgPicture.asset(
                       icon1,
-                      color: index == _currentIndex
+                      color: index == widget.currentIndex
                           ? primaryAppColor
                           : Colors.grey,
                       width: 22,
@@ -77,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                     )
                   : SvgPicture.asset(
                       icon2,
-                      color: index == _currentIndex
+                      color: index == widget.currentIndex
                           ? primaryAppColor
                           : Colors.grey,
                       width: 22,
@@ -88,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                 name,
                 style: TextStyle(
                     color:
-                        index == _currentIndex ? primaryAppColor : Colors.grey),
+                        index == widget.currentIndex ? primaryAppColor : Colors.grey),
               )
             ],
           )),

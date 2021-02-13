@@ -21,49 +21,49 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: primaryAppColor,
       body: SingleChildScrollView(
         child: SafeArea(
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: 10),
-                  height: 200,
-                  child: CarouselSlider(
-                    items: sliderImages,
-                    options: CarouselOptions(
-                      height: 400,
-                      autoPlay: true,
-                      enlargeCenterPage: true,
-                      scrollDirection: Axis.horizontal,
-                      autoPlayCurve: Curves.easeInOutQuad,
-                      autoPlayAnimationDuration: Duration(milliseconds: 1500),
-                    ),
-                  ), //Top Slider
-                ),
-                SizedBox(
-                  height: 40,
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 13),
-                  child: Text(
-                    'Application Overview',
-                    style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: 10),
+                height: 200,
+                child: CarouselSlider(
+                  items: sliderImages,
+                  options: CarouselOptions(
+                    height: 400,
+                    autoPlay: true,
+                    enlargeCenterPage: true,
+                    scrollDirection: Axis.horizontal,
+                    autoPlayCurve: Curves.easeInOutQuad,
+                    autoPlayAnimationDuration: Duration(milliseconds: 1500),
                   ),
+                ), //Top Slider
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 13),
+                child: Text(
+                  'Application Overview',
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
-                Divider(thickness: 0,height: 0,),
-                Container(
-                  // padding: EdgeInsets.only(bottom: 90),
-                  height: 361,
-                  child: ListView.builder(
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      return Overview();
-                    },
-                  ),
-                )
-              ],
-            ),
+              ),
+              Divider(thickness: 0,height: 0,),
+              Container(
+                // padding: EdgeInsets.only(bottom: 90),
+                // height: 361,
+                width: MediaQuery.of(context).size.width,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: 3,
+                  itemBuilder: (context, index) {
+                    return Overview();
+                  },
+                ),
+              )
+            ],
           ),
         ),
       ),
