@@ -1,12 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:railway_v1/ApiFunctions/Api.dart';
-import 'package:railway_v1/models/trip.dart';
 import 'package:railway_v1/models/trips.dart';
+import 'package:railway_v1/utils/bottomSheet.dart';
 import 'package:railway_v1/utils/colors_file.dart';
+import 'package:railway_v1/utils/custom_widgets/custom_button.dart';
+import 'package:railway_v1/utils/bookticket_bottomSheet.dart';
+import 'package:railway_v1/utils/size_config.dart';
 
 class Trips extends StatefulWidget {
-  final Trip trip;
+  final TripsModel trip;
 
   const Trips({Key key, this.trip}) : super(key: key);
 
@@ -46,79 +50,93 @@ class _TripsState extends State<Trips> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          leading: Container(),
+          backgroundColor: primaryAppColor,
+          bottom: PreferredSize(
+            preferredSize: Size.square(20),
+            child: Container(
+              padding: EdgeInsets.only(bottom: 20),
+              // height: 200,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(right: 30, left: 20),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Daily Railway Trips",
+                          style: TextStyle(
+                            color: blackColor,
+                            fontSize: 25,
+                          ),
+                        )),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(right: 30, left: 20),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: SvgPicture.asset(
+                        "images/destination2.svg",
+                        color: Colors.black,
+                        width: 12,
+                        height: 35,
+                      ),
+                    ),
+                  ),
+                  // SizedBox(
+                  //   height: 20,
+                  // ),
+                ],
+              ),
+            ),
+          )),
+      key: _scaffoldKey,
       backgroundColor: primaryAppColor,
       body: SafeArea(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.only(left: 20, right: 20),
-          child: Container(
-            width: 150,
-            child: ListView.builder(
-              itemCount: tripsList.length,
-              itemBuilder: (ctx, index) {
-                return TripsBody(
-                  success: tripsList[index],
-                );
-              },
-            ),
-          ),
-        ),
+        child: tripsList.length == 0
+            ? Container(
+                margin: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / 2),
+                alignment: Alignment.topCenter,
+                child: Text(
+                  "Loading Trips ...",
+                  style: TextStyle(fontSize: 20),
+                ))
+            : Container(
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Container(
+                  width: 150,
+                  child: ListView.builder(
+                    itemCount: tripsList.length,
+                    itemBuilder: (ctx, index) {
+                      return TripsBody(
+                        tripsList[index],
+                      );
+                    },
+                  ),
+                ),
+              ),
       ),
     );
   }
-}
 
-class TripsBody extends StatelessWidget {
-  final Success success;
-
-   TripsBody({Key key, this.success}) : super(key: key);
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  @override
-  Widget build(BuildContext context) {
+  Widget TripsBody(Success success) {
     return InkWell(
       onTap: () {
-        showDialog(
+        showRoundedModalBottomSheet(
+            autoResize: true,
+            dismissOnTap: false,
             context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                backgroundColor: Color(0xff1D1D1D),
-                title: Text(
-                  "Delete Trip ?",
-                  style:
-                      TextStyle(color: Colors.white),
-                ),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                actions: [
-                  FlatButton(
-                      onPressed: () {
-                        Api(context).deleteTripApi(_scaffoldKey, success.id);
-                      },
-                      child: Text(
-                        "delete",
-                      )),
-                  FlatButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(
-                        "cancel",
-                      ))
-                ],
-                content: Container(
-                  height: MediaQuery.of(context).size.height * 0.15,
-                  child: Center(
-                    child: Text(
-                      " Delete This Trip ?",
-                      style: TextStyle(
-                          fontFamily: 'custom_font', color: Colors.white),
-                    ),
-                  ),
-                ),
-              );
-            });
+            radius: 30.0,
+            // This is the default
+            color: Colors.white,
+            // Also default
+            builder: (context) => bookTicketBottomSheet(
+                  success: success,
+                ));
       },
       child: Container(
         margin: EdgeInsets.only(top: 10),
@@ -147,10 +165,11 @@ class TripsBody extends StatelessWidget {
                         Column(
                           children: [
                             Text("Start Time"),
+                            SizedBox(height: 5,),
                             Text(
                               success.departTime,
                               style: TextStyle(
-                                  fontSize: 10, fontWeight: FontWeight.bold),
+                                  fontSize: 15, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
@@ -162,10 +181,11 @@ class TripsBody extends StatelessWidget {
                         Column(
                           children: [
                             Text("Arrival Time"),
+                            SizedBox(height: 5,),
                             Text(
                               success.arrivalTime,
                               style: TextStyle(
-                                  fontSize: 10, fontWeight: FontWeight.bold),
+                                  fontSize: 15, fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),

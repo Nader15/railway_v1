@@ -1,5 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:railway_v1/ApiFunctions/Api.dart';
+import 'package:railway_v1/models/tickets.dart';
 import 'package:railway_v1/utils/colors_file.dart';
+import 'package:railway_v1/utils/global_vars.dart';
 
 class Tickets extends StatefulWidget {
   @override
@@ -7,275 +12,204 @@ class Tickets extends StatefulWidget {
 }
 
 class _TicketsState extends State<Tickets> {
-  int blueTicket = 0;
-  int greenTicket = 0;
-  int purbleTicket = 0;
+  TicketsModel ticketsModel;
+  List<Success> ticketsList = List();
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration(milliseconds: 0), () {
+      gettingData();
+    });
+//    showHud();
+  }
+
+  gettingData() {
+    setState(() {
+      Api(context).userTicketsApi(_scaffoldKey).then((value) {
+        ticketsModel = value;
+        ticketsModel.success.forEach((element) {
+          setState(() {
+            ticketsList.add(element);
+          });
+        });
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: primaryAppColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Column(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      appBar: AppBar(
+          leading: Container(),
+          backgroundColor: primaryAppColor,
+          bottom: PreferredSize(
+            preferredSize: Size.square(20),
+            child: Container(
+              padding: EdgeInsets.only(bottom: 20),
+              // height: 200,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(right: 30, left: 20),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Your Tickets",
+                          style: TextStyle(
+                            color: blackColor,
+                            fontSize: 25,
+                          ),
+                        )),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Column(
-                      //   children: [
-                      //     Container(
-                      //       alignment: Alignment.center,
-                      //       width: 60,
-                      //       height: 40,
-                      //       decoration: BoxDecoration(
-                      //           border: Border.all(color: blackColor, width: 1),
-                      //           borderRadius: BorderRadius.circular(10)),
-                      //       child: Text(
-                      //         "${blueTicket.toString()}",
-                      //         style: TextStyle(fontSize: 20),
-                      //       ),
-                      //     ),
-                      //     Container(
-                      //       alignment: Alignment.center,
-                      //       margin: EdgeInsets.all(20),
-                      //       width: 95,
-                      //       height: 40,
-                      //       decoration: BoxDecoration(
-                      //           color: Colors.blue,
-                      //           borderRadius: BorderRadius.circular(10)),
-                      //       child: Text(
-                      //         "200 EG",
-                      //         style: TextStyle(
-                      //             color: whiteColor,
-                      //             fontSize: 13,
-                      //             fontWeight: FontWeight.bold),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-                      Column(
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            width: 60,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: blackColor, width: 1),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text(
-                              "${greenTicket.toString()}",
-                              style: TextStyle(fontSize: 20),
-                            ),
-                          ),
-                          Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.all(20),
-                            width: 95,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                color: greenColor,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text(
-                              "150 EG",
-                              style: TextStyle(
-                                  color: whiteColor,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
+                      Text(
+                        "${ticketsList.length}",
+                        style: TextStyle(fontSize: 25),
                       ),
-                      Column(
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            width: 60,
+                      Container(
+                        padding: const EdgeInsets.only(right: 10, left: 20),
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: SvgPicture.asset(
+                            "images/ticket.svg",
+                            color: Colors.black,
+                            width: 12,
                             height: 40,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: blackColor, width: 1),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text(
-                              "${purbleTicket.toString()}",
-                              style: TextStyle(fontSize: 20),
-                            ),
                           ),
-                          Container(
-                            alignment: Alignment.center,
-                            margin: EdgeInsets.all(20),
-                            width: 95,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                color: Colors.purple,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Text(
-                              "100 EG",
-                              style: TextStyle(
-                                  color: whiteColor,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
-                ),
-                // Container(
-                //   width: MediaQuery.of(context).size.width / 1.2,
-                //   child: GridView.builder(
-                //     itemCount: 12,
-                //     physics: ScrollPhysics(),
-                //     // physics: NeverScrollableScrollPhysics(),
-                //     shrinkWrap: true,
-                //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                //       crossAxisCount: 4,
-                //       childAspectRatio: 1.9,
-                //       mainAxisSpacing: 10,
-                //       crossAxisSpacing: 10,
-                //     ),
-                //     itemBuilder: (context, index) {
-                //       return blueSeats();
-                //     },
-                //   ),
-                // ),
-                // SizedBox(
-                //   height: 20,
-                // ),
-                Container(
-                  width: MediaQuery.of(context).size.width / 1.2,
-                  child: GridView.builder(
-                    itemCount: 12,
-                    physics: ScrollPhysics(),
-                    // physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      childAspectRatio: 1.9,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                    ),
-                    itemBuilder: (context, index) {
-                      return greenSeats();
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width / 1.2,
-                  child: GridView.builder(
-                    itemCount: 12,
-                    physics: ScrollPhysics(),
-                    // physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
-                      childAspectRatio: 1.9,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                    ),
-                    itemBuilder: (context, index) {
-                      return purpleSeats();
-                    },
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                RaisedButton(
-                  padding: EdgeInsets.only(top: 10, bottom: 10),
-                  onPressed: () {},
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width / 1.2,
-                    child: Text(
-                      "Pay",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                ),
-              ],
+                  // SizedBox(
+                  //   height: 20,
+                  // ),
+                ],
+              ),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget blueSeats() {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          blueTicket++;
-        });
-      },
-      child: Container(
-        alignment: Alignment.center,
-        width: 30,
-        height: 10,
-        decoration: BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Text(
-          "A-1",
-          style: TextStyle(color: whiteColor),
-        ),
-      ),
-    );
-  }
-
-  Widget greenSeats() {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          greenTicket++;
-        });
-      },
-      child: Container(
-        alignment: Alignment.center,
-        width: 30,
-        height: 10,
-        decoration: BoxDecoration(
-          color: Colors.green,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Text(
-          "A-1",
-          style: TextStyle(color: whiteColor),
-        ),
-      ),
-    );
-  }
-
-  Widget purpleSeats() {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          purbleTicket++;
-        });
-      },
-      child: Container(
-        alignment: Alignment.center,
-        width: 30,
-        height: 10,
-        decoration: BoxDecoration(
-          color: Colors.purple,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Text(
-          "A-1",
-          style: TextStyle(color: whiteColor),
-        ),
+          )),
+      backgroundColor: primaryAppColor,
+      body: SafeArea(
+        child: ticketsList.length == 0
+            ? Center(
+                child: Text(
+                  "You have no tickets.",
+                  style: TextStyle(fontSize: 20),
+                ),
+              )
+            : Container(
+                width: MediaQuery.of(context).size.width,
+                child: ListView.builder(
+                  // padding: EdgeInsets.all(20),
+                  itemCount: ticketsList.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        Stack(
+                          children: [
+                            Center(
+                              child: Image.asset(
+                                "images/ticket_sample1.png",
+                                height: 130,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 200, top: 20),
+                              alignment: Alignment.topCenter,
+                              child: Text(
+                                "${userId}",
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.white),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 200, top: 50),
+                              alignment: Alignment.topCenter,
+                              child: SvgPicture.asset(
+                                "images/train.svg",
+                                color: primaryAppColor,
+                                height: 30,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 200, top: 100),
+                              alignment: Alignment.topCenter,
+                              child: Text(
+                                "${ticketsList[index].tripData.price} EGP",
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.white),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(right: 200, top: 20),
+                              alignment: Alignment.topCenter,
+                              child: Text(
+                                "${ticketsList[index].tripData.trip.baseStation.name.toString()}",
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.white),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 20),
+                              alignment: Alignment.topCenter,
+                              child: Text(
+                                "${ticketsList[index].tripData.trip.destinationStation.name}",
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.white),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(right: 200, top: 55),
+                              alignment: Alignment.topCenter,
+                              child: Icon(
+                                Icons.airline_seat_recline_normal_sharp,
+                                color: whiteColor,
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 60),
+                              alignment: Alignment.topCenter,
+                              child: Text(
+                                "Class A",
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.white),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(right: 200, top: 100),
+                              alignment: Alignment.topCenter,
+                              child: Text(
+                                "${ticketsList[index].tripData.trip.departTime.split(":")[0] + ":" + ticketsList[index].tripData.trip.departTime.split(":")[1]}",
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.white),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 100),
+                              alignment: Alignment.topCenter,
+                              child: Text(
+                                "${ticketsList[index].tripData.trip.arrivalTime.split(":")[0] + ":" + ticketsList[index].tripData.trip.arrivalTime.split(":")[1]}",
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Divider(
+                          thickness: 0,
+                          color: blackColor,
+                        )
+                      ],
+                    );
+                  },
+                ),
+              ),
       ),
     );
   }

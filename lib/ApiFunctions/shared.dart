@@ -27,7 +27,7 @@ Future<String> getUserTocken(BuildContext context,) async {
 
 Future setUserTocken({String auth_token,int userId,String userName,String userEmail,String userPhone,String ,String userJoinedTime}) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString(UserAuth , auth_token);
+  await prefs.setString(UserAuth , "Bearer $auth_token");
   await prefs.setString(UserName , userName);
   await prefs.setString(UserEmail , userEmail);
   await prefs.setString(UserPhone , userPhone);

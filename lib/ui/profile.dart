@@ -57,20 +57,37 @@ class Profile extends StatelessWidget {
                   ],
                 ),
               ),
-              new Container(
+              Container(
                 margin: EdgeInsets.only(top: 195.0, left: 35.0),
-                height: 80.0,
-                width: 80.0,
+                padding: EdgeInsets.all(17),
+                height: 80,
+                width: 80,
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: primaryAppColor,
                   borderRadius: BorderRadius.circular(10.0),
-                  image: new DecorationImage(
-                      alignment: Alignment(0, -0.4),
-                      image: AssetImage(
-                          "images/profileImage.jpg"),
-                      fit: BoxFit.cover),
+                ),
+                child: SvgPicture.asset(
+                  "images/profile1.svg",
+                  fit: BoxFit.cover,
+                  width: 10,
+                  height: 10,
+                  color: whiteColor,
                 ),
               ),
+              // new Container(
+              //   margin: EdgeInsets.only(top: 195.0, left: 35.0),
+              //   height: 80.0,
+              //   width: 80.0,
+              //   decoration: BoxDecoration(
+              //     color: Colors.white,
+              //     borderRadius: BorderRadius.circular(10.0),
+              //     image: new DecorationImage(
+              //         alignment: Alignment(0, -0.4),
+              //         image: AssetImage(
+              //             "images/profileImage.jpg"),
+              //         fit: BoxFit.cover),
+              //   ),
+              // ),
               Container(
                 height: 370,
                 margin: EdgeInsets.only(
@@ -99,7 +116,7 @@ class Profile extends StatelessWidget {
                     ),
                     ListTile(
                       leading: Icon(Icons.home, color: primaryAppColor),
-                      title: Text('Address'),
+                      title: Text('Wallet'),
                       subtitle: Text("-----"),
                     ),
                     ListTile(

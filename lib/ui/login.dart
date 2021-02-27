@@ -141,13 +141,15 @@ class _LoginState extends State<Login> {
                                         "_isSelected_isSelected ${_isSelected}");
                                     if (_isSelected) {
                                       setUserTocken(
-                                              auth_token: usersModel.token.plainTextToken
-                                                  .split("|")[1],
-                                          userId: usersModel.user.id,
-                                          userName: usersModel.user.name,
-                                          userEmail: usersModel.user.email,
-                                          userPhone: usersModel.user.phoneNumber,
-                                          userJoinedTime: usersModel.token.accessToken.createdAt)
+                                        auth_token: usersModel
+                                            .token.plainTextToken
+                                            .split("|")[1],
+                                        userId: usersModel.user.id,
+                                        userName: usersModel.user.name,
+                                        userEmail: usersModel.user.email,
+                                        userPhone: usersModel.user.phoneNumber,
+                                        userJoinedTime: usersModel.token.accessToken.createdAt,
+                                      )
                                           .then((value) {
                                         UserTocken =
                                         "Bearer ${usersModel.token.plainTextToken.split("|")[1]}";
@@ -165,11 +167,11 @@ class _LoginState extends State<Login> {
                                     else {
                                       UserTocken =
                                       "Bearer ${usersModel.token.plainTextToken.split("|")[1]}";
-                                      userName = usersModel.user.name;
-                                      userEmail = usersModel.user.email;
-                                      userPhone = usersModel.user.phoneNumber;
-                                      userJoinedTime = usersModel.token.accessToken.createdAt;
-                                      userId = usersModel.user.id;
+                                      // userName = usersModel.user.name;
+                                      // userEmail = usersModel.user.email;
+                                      // userPhone = usersModel.user.phoneNumber;
+                                      // userJoinedTime = usersModel.token.accessToken.createdAt;
+                                      // userId = usersModel.user.id;
                                       navigateAndKeepStack(context, HomePage());
                                       // navigateAndKeepStack(context,Competitions());
                                     }

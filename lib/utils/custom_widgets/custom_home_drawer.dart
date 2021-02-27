@@ -6,6 +6,7 @@ import 'package:railway_v1/ui/Admin/users.dart';
 import 'package:railway_v1/ui/login.dart';
 import 'package:railway_v1/ui/profile.dart';
 import 'package:railway_v1/ui/settings.dart';
+import 'package:railway_v1/ui/train_tracking.dart';
 import 'package:railway_v1/utils/colors_file.dart';
 import 'package:railway_v1/utils/global_vars.dart';
 import 'package:railway_v1/utils/navigator.dart';
@@ -81,28 +82,28 @@ class CustomHomeDrawer extends StatelessWidget {
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => StationsTest()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StationsTest()));
                       }),
                   ListTile(
-                      leading: Icon(Icons.add, color: blackColor),
+                      leading: SvgPicture.asset(
+                        "images/train.svg",
+                        fit: BoxFit.cover,
+                        width: 20,
+                        height: 23,
+                        color: blackColor,
+                      ),
                       title: Text(
-                        'Add Trip',
+                        'Tracking My Train',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => AddTrip()));
-                      }),
-                  ListTile(
-                      leading: Icon(Icons.supervised_user_circle_rounded, color: blackColor),
-                      title: Text(
-                        'Users',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Users()));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TrainTracking()));
                       }),
                   Divider(),
                   ListTile(
@@ -122,7 +123,7 @@ class CustomHomeDrawer extends StatelessWidget {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     onTap: () {
-                      navigateAndKeepStack(context,Settings());
+                      navigateAndKeepStack(context, Settings());
                     },
                   ),
                   Divider(),
@@ -134,7 +135,8 @@ class CustomHomeDrawer extends StatelessWidget {
                           new TextSpan(
                             text: 'Help',
                             style: new TextStyle(
-                                color: Colors.black, fontWeight: FontWeight.bold),
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
